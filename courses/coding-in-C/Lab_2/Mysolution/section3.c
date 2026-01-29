@@ -37,7 +37,7 @@ int main()
     for (int i = 0; i < rows; i++)
     {
         printline();
-        printf("%d", i);
+        printf("%d", i+1);
         printf("|");
 
         for(int j = 0; j < cols; j++)
