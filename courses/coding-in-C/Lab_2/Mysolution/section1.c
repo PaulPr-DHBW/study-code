@@ -10,7 +10,7 @@ int main()
     {
         for(int j = ci_colSize-1; j >=0; j--)
         {
-            printf("%c%d\t", colums[j], ci_rowSize);
+            printf("%c%d\t", colums[j], i);
         }
         printf("\n");
     }
