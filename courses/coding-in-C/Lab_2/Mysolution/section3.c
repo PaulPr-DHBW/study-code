@@ -12,7 +12,7 @@ void printline()
 }
 void printLetters()
 {
-    printf(" ");
+    printf("  ");
     for(int i = 0; i < rows; i++)
     {
         printf(" %c  ", colums[i]);
