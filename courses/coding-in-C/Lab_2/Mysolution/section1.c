@@ -8,7 +8,7 @@ int main()
 {
     for(int i = ci_rowSize; i >= 1; i--)
     {
-        for(int j = ci_colSize-1; j >=0; j--)
+        for(int j = 0; j < ci_colSize; j--)
         {
             printf("%c%d\t", colums[j], i);
         }
