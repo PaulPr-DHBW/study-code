@@ -28,6 +28,7 @@ char menu()
 
         char temp;
         if (scanf(" %c", &temp) != 1)
+            //delay Error
             continue;
 
         for(int i = 0; i < 5; i++)
@@ -40,7 +41,7 @@ char menu()
 
 void output(float sol)
 {
-    printf("\nSolution: %.2f\n", sol);
+    printf("\nSolution: %.2f\n\n", sol);
 }
 
 int main()
@@ -50,9 +51,10 @@ int main()
     while(1)
     {
         char op = menu();
-
-        if(op == 'E')
+        system("clear");
+        if(op == 'E' || op == 'e')
         {
+            //delay
             break;
         }
 
@@ -87,7 +89,7 @@ int main()
         else if(op == '/')
         {
             if(f2 == 0)
-                printf("Error: /DIV#0\n");
+                printf("\n\n\nError: /DIV#0\n");
             else
                 output(f1 / f2);
         }
