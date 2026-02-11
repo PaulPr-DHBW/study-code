@@ -1,3 +1,17 @@
+/*
+*    File:             main.c
+*    Description:      Simple Programm to check an user input, if its a palindrome or not, diregarding Capital letters
+*
+*    @to_lower         function that converts any given string into non-capital letters, its needs the arry length -1 to stop before terminating symbol
+*    @check_palindrome function that compares elements of an array, symmetriacly, checking if its a palindrom or not
+*    @getuser_input    is able to read in the user-input and simultaniously check if the input is in range and correct
+*                      while also setting up a missing terminate
+*    
+*
+*/
+
+
+
 #include <stdio.h>
 #include <string.h>
 
