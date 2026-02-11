@@ -3,7 +3,17 @@
 
 void check_palindrome(char* input_array, int length_array)
 {
-    
+    for(int i = 0; i < length_array; i++)
+    {
+        if(!strcmp(input_array[i], input_array[length_array-i]))
+        {   
+            printf("Your provided Word: %s \nis not a palindrome.", input_array); 
+            return;
+        }
+        
+    }
+
+    printf("Your provided Word: %s \nis a palindrome.", input_array);
 
 }
 
