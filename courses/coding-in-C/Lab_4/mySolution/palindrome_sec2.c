@@ -1,16 +1,33 @@
 #include <stdio.h>
 #include <string.h>
 
+void to_lower(char* input_array , int length_array)
+{
+    for (int i = 0; i < length_array; i++)
+    {
+        input_array[i] = tolower((unsigned char) input_array[i]);
+    }
+
+}
 void check_palindrome(char* input_array, int length_array)
 {
     for(int i = 0; i < length_array; i++)
     {
-        if(input_array[i] != input_array[length_array-i])
+        //Case Sensitive
+        /*if(input_array[i] != input_array[length_array-i]) 
         {   
             printf("Your provided Word: %s \nis not a palindrome.", input_array); 
             return;
         }
-        
+        */
+
+        //Case insensitive
+        to_lower(input_array, length_array);
+        if(input_array[i] != input_array[length_array-i]) 
+        {   
+            printf("Your provided Word: %s \nis not a palindrome.", input_array); 
+            return;
+        }
     }
 
     printf("Your provided Word: %s \nis a palindrome.", input_array);
