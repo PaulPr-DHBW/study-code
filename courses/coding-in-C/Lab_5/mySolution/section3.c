@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-void init_function(int *ptr_particle, int* array_length)
+void init_function(int **ptr_particle, int* array_length)
 {
     srand(time(NULL));
     
@@ -12,12 +12,12 @@ void init_function(int *ptr_particle, int* array_length)
         printf("Please make sure its greater 6!\n Input: ");
     } while (!scanf(" %d", array_length) || *array_length < 6);
 
-    ptr_particle = ((int*)calloc(*array_length, sizeof(int)));   
+    *ptr_particle = calloc(*array_length, sizeof(int));   
 }
 
 void set_array(int *ptr_particle, int* array_length)
 {
-    for(int i = 0; i < array_length; i++)
+    for(int i = 0; i < *array_length; i++)
     {
         if(i == 2 || i == 4 || i == 6)
         {
@@ -31,7 +31,7 @@ void set_array(int *ptr_particle, int* array_length)
 
 int get_rand_number(int max, int min)
 {
-    random (min + (rand() % (max - min + 1)));
+    return (min + (rand() % (max - min + 1)));
 }
 
 
@@ -40,7 +40,7 @@ int main (void)
     int *ptr_particle = NULL;
     int array_length = 0;
 
-    init_function(ptr_particle, &array_length);
+    init_function(&ptr_particle, &array_length);
     set_array(ptr_particle, &array_length);
 
     int *ptr_temp_array = (int*)calloc(array_length, sizeof(int));
@@ -52,10 +52,10 @@ int main (void)
 
     while(number_round < 5)
     {   
-        //lets copy main particles into helping array
+        //lets reset help
         for(int i = 0; i < array_length; i++)
         {
-            ptr_temp_array[i] = ptr_particle[i];
+            ptr_temp_array[i] = 0;
         }
 
         //now lets check the main one for 1s and copy their movement into help
@@ -64,38 +64,37 @@ int main (void)
         {
             if(ptr_particle[i])
             {
-                if(get_rand_number(0,1) && i +1 <= array_length)
+                int temp_random = get_rand_number(1,0);
+                if(temp_random && i +1 < array_length)
                 {
                     if(ptr_temp_array[i+1])
                     {
-                        printf("Collision on index %d", i);
+                        printf("Collision on index %d", i+1);
                         ptr_temp_array [i+1] = 0; 
                     }
                     else
                     {
-                        ptr_particle[i] = 0;
                         ptr_temp_array[i+1] = 1;
                     }
                 }
-                else if(get_rand_number(0,1) && i == array_length)
+                else if(temp_random && i == array_length-1)
                 {
                     ptr_temp_array[i] = 1;
                 }
-                else if(!get_rand_number(0,1) && i - 1 >= 0)
+                else if(!temp_random && i - 1 >= 0)
                 {
                     if(ptr_temp_array[i-1])
                     {
-                        printf("Collision on index %d", i);
+                        printf("Collision on index %d", i-1);
                         ptr_temp_array [i-1] = 0; 
                     }
                     else
                     {
-                        ptr_particle[i] = 0;
                         ptr_temp_array[i-1] = 1;
                     }
 
                 }
-                else if(!get_rand_number(0,1) && i - 1 < 0)
+                else if(!temp_random && i == 0)
                 {
                     ptr_temp_array[i] = 1;
                 }
@@ -105,9 +104,9 @@ int main (void)
         }
 
         //lets print the move:
+        printf("Time %d: ", number_round);
         for(int i = 0; i < array_length; i++)
         {   
-            printf("Time %d: ", number_round);
             printf("%3d", ptr_temp_array[i]);
         }
         printf("\n");
@@ -123,6 +122,7 @@ int main (void)
     }
 
 
-
+    free(ptr_particle);
+    free(ptr_temp_array);
     return 0;
 }
