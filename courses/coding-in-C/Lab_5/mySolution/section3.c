@@ -19,7 +19,7 @@ void set_array(int *ptr_particle, int* array_length)
 {
     for(int i = 0; i < *array_length; i++)
     {
-        if(i == 2 || i == 4 || i == 6)
+        if(i == 1 || i == 3 || i == 5)
         {
             *(ptr_particle + i) = 1;
             continue;
@@ -50,7 +50,7 @@ int main (void)
 
     int number_round = 0;
 
-    while(number_round < 5)
+    while(number_round < 7)
     {   
         //lets reset help
         for(int i = 0; i < array_length; i++)
@@ -69,7 +69,7 @@ int main (void)
                 {
                     if(ptr_temp_array[i+1])
                     {
-                        printf("Collision on index %d", i+1);
+                        printf("Collision on index %d\n", i+1);
                         ptr_temp_array [i+1] = 0; 
                     }
                     else
@@ -85,7 +85,7 @@ int main (void)
                 {
                     if(ptr_temp_array[i-1])
                     {
-                        printf("Collision on index %d", i-1);
+                        printf("Collision on index %d\n", i-1);
                         ptr_temp_array [i-1] = 0; 
                     }
                     else
@@ -104,7 +104,7 @@ int main (void)
         }
 
         //lets print the move:
-        printf("Time %d: ", number_round);
+        printf("Time %d: ", number_round+1);
         for(int i = 0; i < array_length; i++)
         {   
             printf("%3d", ptr_temp_array[i]);
