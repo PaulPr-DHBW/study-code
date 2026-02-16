@@ -30,9 +30,9 @@ void refuel(car *ptr_car_data, float fuel_amount)
 int main (void)
 {
     car Mercedes = {50.0, 10.0, "AMG ONE"};
-    prtinf("Aktueller Tankinhalt: &.2f", Mercedes.f_fuel_level);
-    refuel(&Mercedes);
-    prtinf("Aktueller Tankinhalt: &.2f", Mercedes.f_fuel_level);
+    printf("Aktueller Tankinhalt: &.2f", Mercedes.f_fuel_level);
+    refuel(&Mercedes, 10);
+    printf("Aktueller Tankinhalt: &.2f", Mercedes.f_fuel_level);
 
 
     return 0;
