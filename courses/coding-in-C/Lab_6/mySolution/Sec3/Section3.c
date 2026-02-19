@@ -106,18 +106,18 @@ void print_detection_result(Sensor *ptr_sensor)
         if(status == 0 && ptr_sensor->object_detection[i] == 1)
         {
             status = 1; //Status auf High setzen
-            printf("Start: %f ", ptr_sensor->data[i].time);
+            printf("Start: %.2f ", ptr_sensor->data[i].time);
         }
         else if(status == 1 && ptr_sensor->object_detection[i] == 0)
         {
             status = 0; //Fallende Flanke Status wird auf LOW gesstzt
-            printf("End: %f ", ptr_sensor->data[i-1].time); //Muss das Vorherige Elemt ausgeben, da es ja auf 0 geswitcht ist
+            printf("End: %.2f ", ptr_sensor->data[i-1].time); //Muss das Vorherige Elemt ausgeben, da es ja auf 0 geswitcht ist
         }
     }
 
     if(status == 1) //Falls es vor Detectionsende nicht mehr aufhört
     {
-        printf("End: %f ", ptr_sensor->data[ptr_sensor->data_count -1].time);
+        printf("End: %.2f ", ptr_sensor->data[ptr_sensor->data_count -1].time);
     }
     printf("\n\n"); //Formatierung
 
@@ -144,21 +144,21 @@ void print_overlapping_result(Sensor *ptr_sensor1, Sensor *ptr_sensor2)
 
     for(int i = 0; i < ptr_sensor1->data_count; i++)
     {
-        if(status == 0 && ptr_sensor1->object_detection[i] == 1 && ptr_sensor2->object_detection[i])
+        if(status == 0 && ptr_sensor1->object_detection[i] == 1 && ptr_sensor2->object_detection[i] == 1)
         {
             status = 1; //Status auf High setzen
-            printf("Start: %f ", ptr_sensor1->data[i].time);
+            printf("Start: %.2f ", ptr_sensor1->data[i].time);
         }
-        else if(status == 1 && ptr_sensor1->object_detection[i] == 1 && ptr_sensor2->object_detection[i])
+        else if(status == 1 && ptr_sensor1->object_detection[i] == 0 && ptr_sensor2->object_detection[i] == 0)
         {
             status = 0; //Fallende Flanke Status wird auf LOW gesstzt
-            printf("End: %f ", ptr_sensor1->data[i-1].time); //Muss das Vorherige Elemt ausgeben, da es ja auf 0 geswitcht ist
+            printf("End: %.2f ", ptr_sensor1->data[i-1].time); //Muss das Vorherige Elemt ausgeben, da es ja auf 0 geswitcht ist
         }
     }
 
     if(status == 1) //Falls es vor Detectionsende nicht mehr aufhört
     {
-        printf("End: %f ", ptr_sensor1->data[ptr_sensor1->data_count -1].time);
+        printf("End: %.2f ", ptr_sensor1->data[ptr_sensor1->data_count -1].time);
     }
     printf("\n\n"); //Formatierung
 
@@ -172,7 +172,15 @@ int main(void)
     Sensor1.id = 1;
     Sensor1.threshold = 0.8;
     Sensor1.data = NULL;
-    FILE *ptr_file_Sensor1 = fopen("../sensor1.txt", "r");
+    Sensor1.data_count = 0;
+    Sensor1.object_detection = NULL;
+    FILE *ptr_file_Sensor1 = fopen("../../sensor1.txt", "r");
+
+    if(ptr_file_Sensor1 == NULL)
+    {
+        printf("File 1 nicht vorhanden");
+        return 1;
+    }
 
     //Lets read in Sensor 1:
     read_in_sensordata(&Sensor1, ptr_file_Sensor1);
@@ -184,7 +192,15 @@ int main(void)
     Sensor2.id = 2;
     Sensor2.threshold = 0.7;
     Sensor2.data = NULL;
-    FILE *ptr_file_Sensor2 = fopen("../sensor2.txt", "r");
+    Sensor2.data_count = 0;
+    Sensor2.object_detection = NULL;
+    FILE *ptr_file_Sensor2 = fopen("../../sensor2.txt", "r");
+
+    if(ptr_file_Sensor2 == NULL)
+    {
+        printf("File 2 nicht vorhanden");
+        return 1;
+    }
 
     //Lets read in Sensor 2:
     read_in_sensordata(&Sensor2, ptr_file_Sensor2);
@@ -200,6 +216,13 @@ int main(void)
     print_detection_result(&Sensor2);
 
     //Print overlapping detections
+    print_overlapping_result(&Sensor1, &Sensor2);
+
+    free(Sensor1.object_detection);
+    free(Sensor1.data);
+
+    free(Sensor2.object_detection);
+    free(Sensor2.data);
 
     return 0;
 }
