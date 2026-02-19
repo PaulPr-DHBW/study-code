@@ -1,21 +1,32 @@
+/***************************************************************
+*   FIlE            Section3.c
+*   AUTHOR          Paul Prätorius
+*   Description     programm which is able to read in data given by 2 Sensors (eg. sensor1.txt)
+*                   and convert it into a binary signal which then is used to look for rising/falling flanks
+****************************************************************/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+
+//Definition of Struct Sensor Data
 typedef struct SensorData
 {
-    float time;
-    double probability;
+    float time; //Time of measured Value
+    double probability; // Value measured at time ^
 
 } SensorData;
 
+//definiton of a Sensor
 typedef struct Sensor
 {
-    int id;
-    double threshold;
-    SensorData *data;
-    int *object_detection;
-    int data_count;
+    int id; //ID to know which sensor is used
+    double threshold; //Sensor specific threshold, used to filter lower signals
+    SensorData *data; //dynamic allocated Data pointer with the struct of SensorData
+    int *object_detection; //Integer Pointer later used for an dynamicly allocated Array with a binary code
+    int data_count; //Count of how much Data was read into the Array "data"
 
 } Sensor;
 
