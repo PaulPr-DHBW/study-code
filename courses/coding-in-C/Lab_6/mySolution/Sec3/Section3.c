@@ -23,14 +23,26 @@ void read_in_sensordata(Sensor *ptr_sensor, FILE *ptr_data_file)
     int anzahl = 0;
     float temp = 0;
     int is_data = 0;
+    Sensor temp_data;
+    temp_data.data = NULL;
+    
 
     while(fscanf(ptr_data_file, "%f", &temp) == 1)
     {
         if(!is_data)
         {
             anzahl++;
-            ptr_sensor->data = realloc(ptr_sensor->data, anzahl*sizeof(SensorData));
+            temp_data.data = realloc(ptr_sensor->data, anzahl*sizeof(SensorData));
         }
+
+        if(temp_data.data == NULL)
+        {
+            printf("Error while reading in the File an allocating memory");
+            free(ptr_sensor->data);
+            return;
+        }
+
+        ptr_sensor->data = temp_data.data;
 
         if(!is_data)
         {
@@ -41,12 +53,7 @@ void read_in_sensordata(Sensor *ptr_sensor, FILE *ptr_data_file)
             ptr_sensor->data[anzahl-1].probability = temp;
         }
 
-        is_data = !is_data;
-        
-
-        
-
-
+        is_data = !is_data;       
     }
 }
 
