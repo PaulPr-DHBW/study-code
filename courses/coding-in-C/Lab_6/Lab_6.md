@@ -27,7 +27,7 @@ to read or write data from/into a text-file.
 For the reading functions:
 Create a text-file (.txt) by yourself and put it into the folder of the C-file or use one of the txt-files of section II.
 
-What happens when you move the file your are reading into another folder?
+What happens when you move the file you are reading into another folder?
 What do you need to adjust to solve the issue?
 
 ## Section II
