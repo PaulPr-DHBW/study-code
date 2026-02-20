@@ -1,0 +1,7 @@
+LOG 1: Read in Sensor 1, with 3000 amount of Data
+LOG 2: Read in Sensor 2, with 3000 amount of Data
+LOG 3: Checked Sensor 1, for object detection
+LOG 4: Checked Sensor 2, for object detection
+LOG 5: Printed detection restuls of Sensor 1
+LOG 6: Printed detection restuls of Sensor 2
+LOG 7: Printed overlapping sensor results

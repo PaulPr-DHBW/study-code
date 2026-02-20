@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define FILE_LOG "LogFile.txt"
 
 //Definition of Struct Sensor Data
 typedef struct SensorData
@@ -29,6 +30,122 @@ typedef struct Sensor
     int data_count; //Count of how much Data was read into the Array "data"
 
 } Sensor;
+
+//Testfunction for printing log prompts into a seperate file
+int reset_log (void);
+void print_log (char* s_log_prompt);
+
+
+void read_in_sensordata(Sensor *ptr_sensor, FILE *ptr_data_file);
+void check_object_detection(Sensor *ptr_sensor);
+void print_detection_result(Sensor *ptr_sensor);
+void print_overlapping_result(Sensor *ptr_sensor1, Sensor *ptr_sensor2);
+
+
+
+
+
+
+int main(void)
+{
+    //Log Files:
+    if(reset_log() == 0)
+    {
+        return 1;
+    }
+
+    //All about Sensor 1:
+    Sensor Sensor1;
+    Sensor1.id = 1;
+    Sensor1.threshold = 0.8;
+    Sensor1.data = NULL;
+    Sensor1.data_count = 0;
+    Sensor1.object_detection = NULL;
+    FILE *ptr_file_Sensor1 = fopen("../../sensor1.txt", "r");
+
+    if(ptr_file_Sensor1 == NULL)
+    {
+        printf("File 1 nicht vorhanden");
+        return 1;
+    }
+
+    //Lets read in Sensor 1:
+    read_in_sensordata(&Sensor1, ptr_file_Sensor1);
+
+    fclose(ptr_file_Sensor1);
+
+    //All about Sensor 2:
+    Sensor Sensor2;
+    Sensor2.id = 2;
+    Sensor2.threshold = 0.7;
+    Sensor2.data = NULL;
+    Sensor2.data_count = 0;
+    Sensor2.object_detection = NULL;
+    FILE *ptr_file_Sensor2 = fopen("../../sensor2.txt", "r");
+
+    if(ptr_file_Sensor2 == NULL)
+    {
+        printf("File 2 nicht vorhanden");
+        return 1;
+        
+    }
+
+    //Lets read in Sensor 2:
+    read_in_sensordata(&Sensor2, ptr_file_Sensor2);
+
+    fclose(ptr_file_Sensor2);
+
+    //Now we set up the object_detection for both sensors
+    check_object_detection(&Sensor1);
+    check_object_detection(&Sensor2);
+
+    //Print the Detection times without overlapping
+    print_detection_result(&Sensor1);
+    print_detection_result(&Sensor2);
+
+    //Print overlapping detections
+    print_overlapping_result(&Sensor1, &Sensor2);
+
+    free(Sensor1.object_detection);
+    free(Sensor1.data);
+
+    free(Sensor2.object_detection);
+    free(Sensor2.data);
+
+    return 0;
+}
+
+int reset_log (void)
+{
+    if(remove("LogFile.txt") == 0)
+    {
+        printf("Log-Files erfolgreich zurückgesetzt!\n\n");
+        return 1;
+    }
+    else
+    {
+        printf("Fehler beim löschen der Log-Files!!!");
+        return 0;
+    }
+}
+
+void print_log (char* s_log_prompt)
+{
+    static short log_number = 0;
+    
+    FILE *ptr_log_file = fopen("LogFile.txt", "a");
+
+    if(ptr_log_file == NULL)
+    {
+        printf("Fehler beim öffnen/erstellen der LogDatei!\n\n");
+        return;
+    }
+
+    log_number++;
+    fprintf(ptr_log_file,"LOG %d: %s\n", log_number, s_log_prompt);
+
+    fclose(ptr_log_file);
+}
 
 void read_in_sensordata(Sensor *ptr_sensor, FILE *ptr_data_file)
 {
@@ -69,6 +186,9 @@ void read_in_sensordata(Sensor *ptr_sensor, FILE *ptr_data_file)
     }
 
     ptr_sensor->data_count = anzahl;
+    char buffer[100];
+    sprintf(buffer,"Read in Sensor %d, with %d amount of Data", ptr_sensor->id, ptr_sensor->data_count);
+    print_log(buffer);
 }
 
 void check_object_detection(Sensor *ptr_sensor)
@@ -98,6 +218,10 @@ void check_object_detection(Sensor *ptr_sensor)
 
         i++;
     }
+
+    char buffer[100];
+    sprintf(buffer,"Checked Sensor %d, for object detection", ptr_sensor->id);
+    print_log(buffer);
 }
 
 void print_detection_result(Sensor *ptr_sensor)
@@ -132,6 +256,9 @@ void print_detection_result(Sensor *ptr_sensor)
     }
     printf("\n\n"); //Formatierung
 
+    char buffer[100];
+    sprintf(buffer,"Printed detection restuls of Sensor %d", ptr_sensor->id);
+    print_log(buffer);
 }
 
 void print_overlapping_result(Sensor *ptr_sensor1, Sensor *ptr_sensor2)
@@ -173,67 +300,7 @@ void print_overlapping_result(Sensor *ptr_sensor1, Sensor *ptr_sensor2)
     }
     printf("\n\n"); //Formatierung
 
-
-}
-
-int main(void)
-{
-    //All about Sensor 1:
-    Sensor Sensor1;
-    Sensor1.id = 1;
-    Sensor1.threshold = 0.8;
-    Sensor1.data = NULL;
-    Sensor1.data_count = 0;
-    Sensor1.object_detection = NULL;
-    FILE *ptr_file_Sensor1 = fopen("../../sensor1.txt", "r");
-
-    if(ptr_file_Sensor1 == NULL)
-    {
-        printf("File 1 nicht vorhanden");
-        return 1;
-    }
-
-    //Lets read in Sensor 1:
-    read_in_sensordata(&Sensor1, ptr_file_Sensor1);
-
-    fclose(ptr_file_Sensor1);
-
-    //All about Sensor 2:
-    Sensor Sensor2;
-    Sensor2.id = 2;
-    Sensor2.threshold = 0.7;
-    Sensor2.data = NULL;
-    Sensor2.data_count = 0;
-    Sensor2.object_detection = NULL;
-    FILE *ptr_file_Sensor2 = fopen("../../sensor2.txt", "r");
-
-    if(ptr_file_Sensor2 == NULL)
-    {
-        printf("File 2 nicht vorhanden");
-        return 1;
-    }
-
-    //Lets read in Sensor 2:
-    read_in_sensordata(&Sensor2, ptr_file_Sensor2);
-
-    fclose(ptr_file_Sensor2);
-
-    //Now we set up the object_detection for both sensors
-    check_object_detection(&Sensor1);
-    check_object_detection(&Sensor2);
-
-    //Print the Detection times without overlapping
-    print_detection_result(&Sensor1);
-    print_detection_result(&Sensor2);
-
-    //Print overlapping detections
-    print_overlapping_result(&Sensor1, &Sensor2);
-
-    free(Sensor1.object_detection);
-    free(Sensor1.data);
-
-    free(Sensor2.object_detection);
-    free(Sensor2.data);
-
-    return 0;
+    char buffer[100];
+    sprintf(buffer,"Printed overlapping sensor results");
+    print_log(buffer);
 }
