@@ -48,7 +48,7 @@ void print_overlapping_result(Sensor *ptr_sensor1, Sensor *ptr_sensor2);
 
 int main(void)
 {
-    //Log Files:
+    //Log Files resetten, da es sond unübersichtlich wird
     if(reset_log() == 0)
     {
         return 1;
@@ -63,9 +63,9 @@ int main(void)
     Sensor1.object_detection = NULL;
     FILE *ptr_file_Sensor1 = fopen("../../sensor1.txt", "r");
 
-    if(ptr_file_Sensor1 == NULL)
+    if(ptr_file_Sensor1 == NULL)    //Alway check if it opened correct, otherwise Segmentation FAULT
     {
-        printf("File 1 nicht vorhanden");
+        printf("File 1 nicht vorhanden"); 
         return 1;
     }
 
@@ -106,6 +106,8 @@ int main(void)
     //Print overlapping detections
     print_overlapping_result(&Sensor1, &Sensor2);
 
+
+    //Freeing the Sensors dynamic arrays
     free(Sensor1.object_detection);
     free(Sensor1.data);
 
@@ -115,6 +117,7 @@ int main(void)
     return 0;
 }
 
+//Used to clear the log File
 int reset_log (void)
 {
     if(remove("LogFile.txt") == 0)
@@ -129,11 +132,12 @@ int reset_log (void)
     }
 }
 
+//Used to prompt a new line into the Log File given in by an Array
 void print_log (char* s_log_prompt)
 {
-    static short log_number = 0;
+    static short log_number = 0; //Static int to keep track of how often a log is written
     
-    FILE *ptr_log_file = fopen("LogFile.txt", "a");
+    FILE *ptr_log_file = fopen("LogFile.txt", "a"); //need to use append mode, to not override one line all the time
 
     if(ptr_log_file == NULL)
     {
@@ -142,11 +146,12 @@ void print_log (char* s_log_prompt)
     }
 
     log_number++;
-    fprintf(ptr_log_file,"LOG %d: %s\n", log_number, s_log_prompt);
+    fprintf(ptr_log_file,"LOG %d: %s\n", log_number, s_log_prompt); //Using fprintf to also print variables directly into the File without a buffer
 
     fclose(ptr_log_file);
 }
 
+//Used to Read in the Sensor Data from a given File
 void read_in_sensordata(Sensor *ptr_sensor, FILE *ptr_data_file)
 {
     int anzahl = 0;
@@ -155,23 +160,24 @@ void read_in_sensordata(Sensor *ptr_sensor, FILE *ptr_data_file)
     Sensor temp_data;
     temp_data.data = NULL;
     
-
+    //As long as we are able to scan a new floating variable into temp (returning 1) we work with out Sensor
     while(fscanf(ptr_data_file, "%f", &temp) == 1)
     {
+        //2 Collums starting with time -> Starting with data = 0; 
         if(!is_data)
         {
             anzahl++;
-            temp_data.data = realloc(ptr_sensor->data, anzahl*sizeof(SensorData));
+            temp_data.data = realloc(ptr_sensor->data, anzahl*sizeof(SensorData)); //Everytime a new line starts (we are the time collum) we need to add a new SensorData struct to our data branch
         }
 
-        if(temp_data.data == NULL)
+        if(temp_data.data == NULL) //Quick check if realloc worked -> Otherwise we need to exit the code and free the data to avoid a memory leak
         {
             printf("Error while reading in the File an allocating memory");
             free(ptr_sensor->data);
             return;
         }
 
-        ptr_sensor->data = temp_data.data;
+        ptr_sensor->data = temp_data.data; //Redirecting the originally Pointer towards the new Adress
 
         if(!is_data)
         {
@@ -185,12 +191,15 @@ void read_in_sensordata(Sensor *ptr_sensor, FILE *ptr_data_file)
         is_data = !is_data;       
     }
 
-    ptr_sensor->data_count = anzahl;
+    ptr_sensor->data_count = anzahl; 
+
+    //Log entry
     char buffer[100];
     sprintf(buffer,"Read in Sensor %d, with %d amount of Data", ptr_sensor->id, ptr_sensor->data_count);
     print_log(buffer);
 }
 
+//Used to check the safed Sensor Data and convert it into a binary signal
 void check_object_detection(Sensor *ptr_sensor)
 {
     int i = 0;
