@@ -112,7 +112,7 @@ char* get_string(const char* Input_Name)
 		return NULL;
 	}
 
-	strcpy_s(return_string, input_len, buffer);
+	strcpy(return_string, buffer);
 
 	return return_string;
 

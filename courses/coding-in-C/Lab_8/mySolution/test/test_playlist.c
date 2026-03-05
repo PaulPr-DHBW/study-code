@@ -1,13 +1,29 @@
 #include "../include/playlist.h"
 
-#include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 
+
+/*
+    @brief  testing if initalising of a new Playlist works
+*/
 void test_init_playlist();
+
+/*
+    @brief  testing if a new Song ist added succesfully to an empty playlist
+*/
 void test_add_song();
+
+//  @brief  testing if the first song ist deleted, by checking the new adress of the head
 void test_delete_first_song();
+
+//  @brief  testing for an error while deleting in an empty list
 void test_delete_first_song_empty();
+
+//  @brief  testing if a playlist with n elemtn can be deleted
 void test_delete_playlist();
+
+//  @brief  test for song amount, if it stays in range
 void test_max_songs_limit();
 
 
@@ -96,5 +112,5 @@ void test_max_songs_limit()
         add_song(&test);
     }
 
-    assert(count_playlist_elements(&test <= MAX_SONGS));
+    assert(count_playlist_elements(&test) <= MAX_SONGS);
 }
