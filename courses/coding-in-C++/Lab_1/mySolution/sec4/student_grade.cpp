@@ -136,54 +136,31 @@ void calculate_grade(std::string& name, u_int16_t& homework, u_int16_t& midterm,
 }
 void print_report(std::string& name, u_int16_t& homework, u_int16_t& midterm, u_int16_t& finalExam, float& finalGrade, char& letterGrade)
 {
-    std::setfill('-');
-    std::setw(20);
+    std::cout << std::setfill('-') << std::setw(40) << "" << '\n';
+    std::cout << "Student Report\n";
+    std::cout << std::setw(40) << "" << '\n';
 
-    //Head
-    std::cout << std::endl;
-    std::setfill(' ');
-    std::left;
-    std::cout << "Name: " << name << "\n\nScores" << std::endl;
-    std::setfill('-');
-    std::cout << std::endl;
+    std::cout << std::setfill(' ');
+    std::cout << "Name: " << name << "\n\n";
 
-    //Scores
-    std::setfill(' ');
-    std::left;
-    std::cout << "Homework:";
-    std::right;
-    std::cout << homework << std::endl;
+    std::cout << "Scores\n";
+    std::cout << std::setfill('-') << std::setw(40) << "" << '\n';
+    std::cout << std::setfill(' ');
 
-    std::left;
-    std::cout << "Midterm:";
-    std::right;
-    std::cout << midterm << std::endl;
+    std::cout << std::left << std::setw(16) << "Homework"     << ": " << std::right << std::fixed << std::setprecision(2) << homework   << '\n';
+    std::cout << std::left << std::setw(16) << "Midterm"      << ": " << std::right << std::fixed << std::setprecision(2) << midterm    << '\n';
+    std::cout << std::left << std::setw(16) << "Final Exam"   << ": " << std::right << std::fixed << std::setprecision(2) << finalExam  << "\n\n";
 
-    std::left;
-    std::cout << "Final Exam:";
-    std::right;
-    std::cout << finalExam << std::endl << std::endl;
-
-    std::left;
-    std::cout << "Fianl Grade:";
-    std::right;
-    std::cout << std::fixed << std::setprecision(2) << finalGrade << std::endl;
-
-    std::left;
-    std::cout << "Letter Grade:";
-    std::right;
-    std::cout << letterGrade << std::endl;
+    std::cout << std::left << std::setw(16) << "Final Grade"  << ": " << std::right << std::fixed << std::setprecision(2) << finalGrade << '\n';
+    std::cout << std::left << std::setw(16) << "Letter Grade" << ": " << std::right << letterGrade << '\n';
 
     std::string status = "Failed";
     if (finalGrade >= 50)
     {
         status = "Passed";
     }
-    std::left;
-    std::cout << "Status:";
-    std::right;
-    std::cout << status << std::endl;
-    
-    std::setfill('-');
-    std::cout << std::endl;
+
+    std::cout << std::left << std::setw(16) << "Status"       << ": " << std::right << status << '\n';
+
+    std::cout << std::setfill('-') << std::setw(40) << "" << '\n';
 }
