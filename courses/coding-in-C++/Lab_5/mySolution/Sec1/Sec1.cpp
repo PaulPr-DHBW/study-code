@@ -6,16 +6,16 @@ template <typename T>
 void generic_swap(T a, T b)
 {
     std::cout   << "Before Swapping:\n"
-                << "a: " << a << endl
-                << "b: " << b << endl;
+                << "a: " << a << std::endl
+                << "b: " << b << std::endl;
 
     T temp = a;
     a = b;
     b = temp;
 
     std::cout   << "After Swapping:\n"
-                << "a: " << a << endl
-                << "b: " << b << endl;
+                << "a: " << a << std::endl
+                << "b: " << b << std::endl;
 }
 //Why is a template better? You use one logic for different types, saving time and providing a better overview of the code
 
@@ -23,7 +23,7 @@ void generic_swap(T a, T b)
 template <typename T, int N>
 void print_sensor_frame(T (&arr)[N])
 {
-    std:: cout << "["
+    std:: cout << "[" ;
     for (int i = 0; i < N; i++)
     {
         std:: cout << ", "<< arr[i];
@@ -61,11 +61,11 @@ void tag_composer(std::string label_1, std::string label_2, T value_1, U value_2
 }
 
 //==== Lab 5 - Sec 1 Fixed-Size Packet Buffer ====
-template <typename T, int N>
-void print_sensor_frame(T (&arr)[N])
+template <typename O, int L>
+void fixed_buffer(O (&arr)[L])
 {
-    std:: cout << "["
-    for (int i = 0; i < N; i++)
+    std:: cout << "[" ;
+    for (int i = 0; i < L; i++)
     {
         std:: cout << ", "<< arr[i];
     }
