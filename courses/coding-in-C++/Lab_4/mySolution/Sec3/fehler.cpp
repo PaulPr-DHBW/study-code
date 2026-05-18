@@ -31,7 +31,7 @@ public:
     {
     }
 
-    void play() // override fehlt
+    void play() // override fehlt und const auch
     {
         std::cout << "Playing MP3 by " << artist << "\n";
     }
