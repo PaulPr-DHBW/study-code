@@ -14,7 +14,7 @@ public:
         std::cout << "Generic audio file\n";
     }
 
-    ~AudioFile()
+    ~AudioFile() // virtueller Konstruktor notwendig
     {
         std::cout << "AudioFile destroyed\n";
     }
