@@ -83,24 +83,22 @@ int main(void)
 	*/
 
 	// Tests of Part 3
-	circle c1(3);
-	rectangle r1(4, 5);
-	circle c2(10);
-	rectangle r2(2, 8);
-
 	shape* arr[4];
 
-	arr[0] = &c1;
-	arr[1] = &c2;
-	arr[2] = &r1;
-	arr[3] = &r2;
+	arr[0] = new circle(3);
+	arr[1] = new circle (10)
+	arr[2] = new rectangle(4,5);
+	arr[3] = new rectanlge(2,8);
 
 	for (auto it : arr)
 	{
 		(*it).display();
 	}
 
-
+	for (auto it : arr)
+	{
+		delete it;
+	}
 	/*
 	Reflection:
 	a) Das "virtual" dient dazu dem Compiler mitzuteilen, dass diese Funktion bei der Vererbung überschrieben wird. Es ist somit das anlegen eines Bauplans für Funktionen
